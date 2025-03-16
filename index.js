@@ -1,31 +1,19 @@
 // 模拟的考生分数数据
-const women = ['姓名', '800m', '仰卧起坐', '单杠悬挂', '名次', '是否入围'];
-const men = ['姓名', '1000m', '引体向上', '立定跳远', '名次', '是否入围'];
-const peoples = [
-  {
-    name: '1',
-    phone: '12',
-    sex: 0,
-    scores: [1, "3分50秒", "A", "B", "C", 10, true],
-  }, {
-    name: '2',
-    phone: '22',
-    sex: 0,
-    scores: [2, "3分50秒", "A", "B", "C", 10, true],
-  },
-]
+const women = ['姓名', '笔试成绩', '800m', '仰卧起坐', '单杠悬挂', '名次', '是否入围'];
+const men = ['姓名', '笔试成绩', '1000m', '引体向上', '立定跳远', '名次', '是否入围'];
+
 
 const title = document.querySelector('.title');
 let isQuery = false;
 
 function queryScore() {
   const name = document.getElementById('nameInput').value;
-  const phone = document.getElementById('phoneInput').value;
+  const number = document.getElementById('phoneInput').value;
   const resultDiv = document.getElementById('result');
   let isEnter = false;
   resultDiv.innerHTML = '';
 
-  const people = peoples.filter(item => item.name == name && item.phone == phone);
+  const people = peoples.filter(item => item.name == name && item.number == number);
   if (people.length > 0) {
     isQuery = true;
     title.innerHTML = `您的成绩查询结果如下`;
@@ -54,10 +42,9 @@ function queryScore() {
       testCell.className = 'blue';
       const scoreCell = document.createElement('td');
       if (test == '是否入围') {
-        isEnter = true;
-        scoreCell.textContent = scoreInfo[i] ? '已入围' : '名次递补';
+        isEnter = scoreInfo[6] == 1;
+        scoreCell.textContent = scoreInfo[6] == 1 ? '已入围' : '名次递补';
       } else {
-        isEnter = false;
         scoreCell.textContent = scoreInfo[i];
       }
       row.appendChild(testCell);

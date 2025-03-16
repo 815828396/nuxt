@@ -6,26 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2025河北省专职应急救援员成绩查询</title>
     <style>
+    
+      * {
+        box-sizing: border-box;
+      }
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             /* align-items: center; */
-            overflow: auto;
-            height: 100vh;
+            min-height: 100vh;
+            padding-top: 130px;
             margin: 0;
         }
 
         .container {
-            width: 60%;
+            width: 100%;
             background-color: #fff;
-            margin: 120px auto 0;
+            margin: 0 auto;
             padding: 20px;
             border-radius: 8px;
             /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
             text-align: center;
         }
+.center {
 
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+}
         input {
+            max-width: 500px;
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -33,6 +43,7 @@
         }
 
         button {
+            width: 100%;
             background-color: #007BFF;
             color: #fff;
             padding: 10px 20px;
@@ -83,6 +94,14 @@ color: #fff;
         .label > div {
           width: 70px;
         }
+        @media (max-width: 750px)  {
+        
+        header {
+
+        font-size: 24px;
+        }
+        
+      }
     </style>
 </head>
 
@@ -92,23 +111,25 @@ color: #fff;
       <li>1、</li>  
     </ul>
     <div class="container">
-        <img src="./logo.jpg" alt="" width="80px" height="80px">
+        <img src="./logo.jpg" alt="" width="60px" height="60px">
+        <div class="center">
+
         <h3 class="title">请输入您的查询信息</h3>
         <div class="label">
-          <div>姓名</div>
+          <input type="text" id="phoneInput" placeholder="考生邮箱发送的成绩凭证号">
+          </div>
+        <div class="label">
         <input type="text" id="nameInput" placeholder="请输入考生姓名">
         </div>
-        <div class="label">
-          <div>电话</div>
-        <input type="text" id="phoneInput" placeholder="请输入考生手机号">
+        <button onclick="queryScore()">查询成绩</button>
         </div>
-        <button onclick="queryScore()">查询</button>
         <div id="result"></div>
         <div class="tip"></div>
     </div>
     
 </body>
 
+<script src="./people.min.js"></script>
 <script src="./index.js"></script>
 </html>
 
