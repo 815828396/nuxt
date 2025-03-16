@@ -1,9 +1,13 @@
 // 模拟的考生分数数据
-const women = ['姓名', '笔试成绩', '800m', '仰卧起坐', '单杠悬挂', '名次', '是否入围'];
-const men = ['姓名', '笔试成绩', '1000m', '引体向上', '立定跳远', '名次', '是否入围'];
+const women = ['姓名：', '笔试成绩：', '800m：', '仰卧起坐：', '单杠悬挂：', '名次：', '是否入围'];
+const men = ['姓名：', '笔试成绩：', '1000m：', '引体向上：', '立定跳远：', '名次：', '是否入围'];
 
 
-const title = document.querySelector('.title');
+const title = document.querySelector('.title'),
+  center = document.querySelector('.center'),
+  nanBiaozhun = document.querySelector('.nanBiaozhun'),
+  nvBiaozhun = document.querySelector('.nvBiaozhun');
+
 let isQuery = false;
 
 function queryScore() {
@@ -42,8 +46,10 @@ function queryScore() {
       testCell.className = 'blue';
       const scoreCell = document.createElement('td');
       if (test == '是否入围') {
-        isEnter = scoreInfo[6] == 1;
-        scoreCell.textContent = scoreInfo[6] == 1 ? '已入围' : '名次递补';
+        isEnter = scoreInfo[i] == 1;
+        console.log(scoreInfo);
+
+        scoreCell.textContent = scoreInfo[i] == 1 ? '已入围' : '名次递补';
       } else {
         scoreCell.textContent = scoreInfo[i];
       }
@@ -54,14 +60,20 @@ function queryScore() {
     })
     const tipNode = document.querySelector('.tip');
     if (isEnter) {
-      tipNode.innerHTML = '请等待入营电话通知';
+      tipNode.innerHTML = '说明：请保持电话畅通,等待入营资格培训的电话通知!';
     } else {
-      tipNode.innerHTML = '需按照考生名次递补进入';
+      tipNode.innerHTML = '说明：原入选人员因各种原因无法参与后续环节时，按照既定的排名顺序，依次选取候补人员进行补充机制。';
     }
 
     table.appendChild(thead);
     table.appendChild(tbody);
     resultDiv.appendChild(table);
+    center.style.display = 'none';
+    if (people[0].sex == 1) {
+      nanBiaozhun.style.display = 'block';
+    } else {
+      nvBiaozhun.style.display = 'block';
+    }
   } else {
     isQuery = false;
     title.innerHTML = `请输入您的查询信息`;
