@@ -1,6 +1,6 @@
 // 模拟的考生分数数据
-const women = ['姓名：', '笔试成绩：', '800m：', '仰卧起坐：', '单杠悬挂：', '名次：', '是否入围'];
-const men = ['姓名：', '笔试成绩：', '1000m：', '引体向上：', '立定跳远：', '名次：', '是否入围'];
+const women = ['姓名：', '笔试成绩：', '800m：', '仰卧起坐：', '单杠悬挂：', '名次：', '是否通过'];
+const men = ['姓名：', '笔试成绩：', '1000m：', '引体向上：', '立定跳远：', '名次：', '是否通过'];
 
 
 const title = document.querySelector('.title'),
@@ -45,11 +45,11 @@ function queryScore() {
       testCell.textContent = test;
       testCell.className = 'blue';
       const scoreCell = document.createElement('td');
-      if (test == '是否入围') {
+      if (test == '是否通过') {
         isEnter = scoreInfo[i] == 1;
         console.log(scoreInfo);
 
-        scoreCell.textContent = scoreInfo[i] == 1 ? '已入围' : '名次递补';
+        scoreCell.textContent = scoreInfo[i] == 1 ? '已通过' : '名次递补';
       } else {
         scoreCell.textContent = scoreInfo[i];
       }
@@ -60,9 +60,9 @@ function queryScore() {
     })
     const tipNode = document.querySelector('.tip');
     if (isEnter) {
-      tipNode.innerHTML = '说明：请保持电话畅通,等待入营资格培训的电话通知!';
+      tipNode.innerHTML = '说明：恭喜您通过我单位专职应急救援员考核并获得国家职业资格技能培训（录用）资格，通知书将于一天后发送至当前邮箱。';
     } else {
-      tipNode.innerHTML = '说明：原入选人员因各种原因无法参与后续环节时，按照既定的排名顺序，依次选取候补人员进行补充机制。';
+      tipNode.innerHTML = '说明：因原入选人员各种原因无法参与后续环节时，按照既定的排名顺序，依次选取候补人员进行补充机制。';
     }
 
     table.appendChild(thead);
