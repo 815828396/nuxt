@@ -1,6 +1,6 @@
 // 模拟的考生分数数据
-const women = ['姓名：', '笔试成绩：', '800m：', '仰卧起坐：', '单杠悬挂：', '名次：', '是否通过'];
-const men = ['姓名：', '笔试成绩：', '1000m：', '引体向上：', '立定跳远：', '名次：', '是否通过'];
+const women = ['姓名：', '笔试成绩：', '800m：', '仰卧起坐：', '单杠悬挂：', '综合排名：', '招录结果'];
+const men = ['姓名：', '笔试成绩：', '1000m：', '引体向上：', '立定跳远：', '综合排名：', '招录结果'];
 
 
 const title = document.querySelector('.title'),
@@ -45,7 +45,7 @@ function queryScore() {
       testCell.textContent = test;
       testCell.className = 'blue';
       const scoreCell = document.createElement('td');
-      if (test == '是否通过') {
+      if (test == '招录结果') {
         isEnter = scoreInfo[i] == 1;
         console.log(scoreInfo);
 
@@ -60,9 +60,9 @@ function queryScore() {
     })
     const tipNode = document.querySelector('.tip');
     if (isEnter) {
-      tipNode.innerHTML = '说明：恭喜您通过我单位专职应急救援员考核并获得国家职业资格技能培训（录用）资格，通知书将于一天后发送至当前邮箱。';
+      tipNode.innerHTML = '说明：恭喜您通过我单位专职应急救援员招录考核并获得国家职业资格准入培训名额。请您注意查收入营培训通知邮件，按要求参加职业资格培训。';
     } else {
-      tipNode.innerHTML = '说明：因原入选人员各种原因无法参与后续环节时，按照既定的排名顺序，依次选取候补人员进行补充机制。';
+      tipNode.innerHTML = '说明：专职应急救援员提前批共计招录31人（男16人，女15人）；根据综合排名，您获得了补录资格。（如入围考生无法参与时，按照排名顺序，依次递补）';
     }
 
     table.appendChild(thead);
