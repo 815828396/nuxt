@@ -449,7 +449,7 @@ const peoples = [
     },
     {
         "name": "贾佳圣",
-        "number": "251000",
+        "number": "251210",
         "sex": 1,
         "scores": [
             "贾佳圣",
