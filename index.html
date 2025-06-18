@@ -1,282 +1,413 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2025河北省专职应急救援员成绩查询</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>概率工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        neutral: '#F3F4F6',
+                        dark: '#1F2937'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .animate-fade-in {
+                animation: fadeIn 0.5s ease-in-out;
+            }
+            .animate-slide-up {
+                animation: slideUp 0.3s ease-out;
+            }
+            .card-shadow {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+        }
 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      min-height: 100vh;
-      padding-top: 80px;
-      margin: 0;
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-    .tip {
-      margin: 10px 0;
-      text-align: left;
-    }
-
-    .container {
-      width: 100%;
-      background-color: #fff;
-      margin: 0 auto;
-      padding: 20px;
-      border-radius: 8px;
-      /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-      /* text-align: center; */
-    }
-
-    .head {
-      text-align: center;
-    }
-
-    .center {
-
-      text-align: center;
-      max-width: 500px;
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    .footer {
-
-      margin: 0 auto;
-      max-width: 500px;
-      width: 100%;
-
-    }
-
-    input {
-      max-width: 500px;
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      box-sizing: border-box;
-    }
-
-    button {
-      width: 100%;
-      background-color: #007BFF;
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px auto 0;
-    }
-
-    table th,
-    table td {
-      border: 1px solid #333;
-      padding: 8px;
-      text-align: left;
-      /* text-align: center; */
-    }
-
-    table td:nth-child(odd) {
-      width: 100px;
-      text-align: right;
-    }
-
-    .blue {
-      background: rgb(216, 216, 255);
-    }
-
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      font-size: 30px;
-      padding: 10px;
-      font-weight: bold;
-      color: #fff;
-      background: rgb(168, 50, 50);
-    }
-
-    .label {
-      display: flex;
-      align-items: center;
-    }
-
-    .label>div {
-      width: 70px;
-    }
-
-    @media (max-width: 750px) {
-
-      header {
-
-        font-size: 24px;
-      }
-
-    }
-
-    ul,
-    li {
-      padding: 0;
-      list-style: none;
-    }
-
-    .biaozhun {
-      line-height: 30px;
-      background: #f1f1f1;
-      margin: 5px 0;
-      padding: 0 5px;
-    }
-
-    .nvBiaozhun,
-    .nanBiaozhun {
-      display: none;
-    }
-
-    .biaozhun .biaozhun-t {
-      font-weight: bold;
-      margin: 10px 0;
-    }
-
-    .biaozhun .biaozhun-box {
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .biaozhun .biaozhun-box div {
-      width: 50%;
-      /* flex: 0; */
-    }
-  </style>
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
 </head>
-
-<body>
-  <header>2025河北省专职应急救援员招录成绩查询</header>
-
-  <div class="container">
-
-
-    <div class="head">
-
-      <img src="./logo.jpg" alt="" width="60px" height="64px">
-      <h3 class="title">请输入您的查询信息</h3>
-    </div>
-    <div class="center">
-      <div class="label">
-        <input type="text" id="phoneInput" placeholder="请输入身份证后六位">
-      </div>
-      <div class="label">
-        <input type="text" id="nameInput" placeholder="请输入姓名">
-      </div>
-      <button onclick="queryScore()">查询成绩</button>
-    </div>
-    <div class="footer">
-
-      <div id="result"></div>
-      <div class="tip"></div>
-      <div class="biaozhun">
-        <div>
-          <div style="text-align: center;">综合排名判定标准(择优录取)：</div>
-          <div>综合(占比)=个人身份是否更符合应急救援员岗位情况（退役/应届/非应届分组分别评判）x17%+（心理测评+选择题+简答题）=笔试成绩x33%+体测成绩x50%</div>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- 导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-random text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold text-dark">概率工具</h1>
+            </div>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">首页</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">使用说明</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">关于</a></li>
+                </ul>
+            </nav>
         </div>
-        <!-- 女 -->
-        <ul class="nvBiaozhun">
-          <li>
-            <div class="biaozhun-t">笔试成绩:</div>
-            <div class="biaozhun-box">
-              <div>【A】86-100</div>
-              <div>【B】71-85</div>
-              <div>【C】61-70</div>
-              <div>【D】0-60</div>
-            </div>
-          </li>
-          <li>
-            <div class="biaozhun-t">800m：</div>
-            <div class="biaozhun-box">
-              <div>【A】0~3分30</div>
-              <div>【B】3分30~4分</div>
-              <div>【C】4分~4分30</div>
-              <div>【D】4分30~5分</div>
-            </div>
-          </li>
-          <li>
-            <div class="biaozhun-t">仰卧起坐：</div>
-            <div class="biaozhun-box">
-              <div>【A】50以上</div>
-              <div>【B】38-50</div>
-              <div>【C】30-38</div>
-              <div>【D】0-30</div>
-            </div>
-          </li>
-          <li>
-            <div class="biaozhun-t">单杠悬挂：</div>
-            <div class="biaozhun-box">
-              <div>【A】60s以上</div>
-              <div>【B】40-60s</div>
-              <div>【C】30-40s</div>
-              <div>【D】0-30s</div>
-            </div>
-          </li>
-        </ul>
-        <!-- 男 -->
-        <ul class="nanBiaozhun">
-          <li>
-            <div class="biaozhun-t">笔试成绩:</div>
-            <div class="biaozhun-box">
-              <div>【A】86-100</div>
-              <div>【B】71-85</div>
-              <div>【C】61-70</div>
-              <div>【D】0-60</div>
-            </div>
-          </li>
-          <li>
-            <div class="biaozhun-t">1000m：</div>
-            <div class="biaozhun-box">
-              <div>【A】0~3分30</div>
-              <div>【B】3分30~4分</div>
-              <div>【C】4分~4分30</div>
-              <div>【D】4分30~5分</div>
-            </div>
-          </li>
-          <li>
-            <div class="biaozhun-t">引体向上：</div>
-            <div class="biaozhun-box">
-              <div>【A】16以上</div>
-              <div>【B】13~15</div>
-              <div>【C】9~12</div>
-              <div>【D】0-8</div>
-            </div>
-          </li>
-          <li>
-            <div class="biaozhun-t">立定跳远：</div>
-            <div class="biaozhun-box">
-              <div>【A】2m5以上</div>
-              <div>【B】2m5~2m3</div>
-              <div>【C】2m1~2m3</div>
-              <div>【D】0-2m1</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+    </header>
 
+    <!-- 主要内容 -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <div class="max-w-3xl mx-auto">
+            <!-- 介绍卡片 -->
+            <div class="bg-white rounded-xl p-6 mb-8 card-shadow animate-fade-in">
+                <h2 class="text-2xl font-bold text-dark mb-4">随机分组工具</h2>
+                <p class="text-gray-600 mb-4">适合教学分组、活动等场景。</p>
+                <div class="flex flex-wrap gap-2">
+                    <!-- <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">概率可控</span> -->
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">实时统计</span>
+                    <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">结果可视化</span>
+                </div>
+            </div>
+
+            <!-- 设置 -->
+            <!-- <div class="bg-white rounded-xl p-6 mb-8 card-shadow animate-fade-in" style="animation-delay: 0.1s">
+                <h3 class="text-xl font-semibold text-dark mb-6 flex items-center">
+                    <i class="fa fa-cog text-primary mr-2"></i> 设置
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-3">
+                        <label class="block text-sm font-medium text-gray-700">A组概率 (%)</label>
+                        <div class="flex items-center space-x-4">
+                            <input type="range" id="probabilityA" min="0" max="100" value="80" 
+                                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                                oninput="updateProbability()">
+                            <span id="probabilityAValue" class="text-xl font-bold text-primary min-w-[40px] text-center">80</span>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="block text-sm font-medium text-gray-700">B组概率 (%)</label>
+                        <div class="flex items-center space-x-4">
+                            <input type="range" id="probabilityB" min="0" max="100" value="20" 
+                                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-secondary"
+                                oninput="updateProbability()">
+                            <span id="probabilityBValue" class="text-xl font-bold text-secondary min-w-[40px] text-center">20</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">概率分布</label>
+                    <div class="flex h-10 rounded-lg overflow-hidden shadow-sm">
+                        <div id="probabilityBarA" class="bg-primary flex-1 flex items-center justify-center text-white font-medium" style="width: 80%">A组 (80%)</div>
+                        <div id="probabilityBarB" class="bg-secondary flex-1 flex items-center justify-center text-white font-medium" style="width: 20%">B组 (20%)</div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- 结果 -->
+            <div class="bg-white rounded-xl p-6 mb-8 card-shadow animate-fade-in" style="animation-delay: 0.2s">
+                <h3 class="text-xl font-semibold text-dark mb-6 flex items-center">
+                    <i class="fa fa-trophy text-yellow-500 mr-2"></i> 结果
+                </h3>
+                
+                <div class="flex justify-center mb-6">
+                    <button id="drawButton" class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center">
+                        <i class="fa fa-refresh mr-2"></i> 开始
+                    </button>
+                </div>
+                
+                <div id="resultContainer" class="hidden mb-6">
+                    <div id="resultCard" class="bg-neutral rounded-lg p-6 text-center animate-slide-up">
+                        <div id="resultIcon" class="text-6xl mb-4"></div>
+                        <h4 id="resultText" class="text-3xl font-bold mb-2"></h4>
+                        <p id="resultMessage" class="text-gray-600"></p>
+                    </div>
+                </div>
+                
+                <!-- 统计数据 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <h5 class="text-sm font-medium text-blue-800 mb-2">A组统计</h5>
+                        <div class="flex items-end justify-between">
+                            <div>
+                                <p class="text-3xl font-bold text-blue-600" id="totalA">0</p>
+                                <p class="text-sm text-blue-500">抽中次数</p>
+                            </div>
+                            <div class="w-20 h-20">
+                                <canvas id="chartA"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <h5 class="text-sm font-medium text-green-800 mb-2">B组统计</h5>
+                        <div class="flex items-end justify-between">
+                            <div>
+                                <p class="text-3xl font-bold text-green-600" id="totalB">0</p>
+                                <p class="text-sm text-green-500">抽中次数</p>
+                            </div>
+                            <div class="w-20 h-20">
+                                <canvas id="chartB"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 历史记录 -->
+            <div class="bg-white rounded-xl p-6 card-shadow animate-fade-in" style="animation-delay: 0.3s">
+                <h3 class="text-xl font-semibold text-dark mb-6 flex items-center">
+                    <i class="fa fa-history text-gray-500 mr-2"></i> 历史记录
+                </h3>
+                
+                <div id="historyContainer" class="space-y-3 max-h-[300px] overflow-y-auto pr-2">
+                    <p class="text-gray-500 italic text-center">暂无记录</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">概率工具</h4>
+                    <p class="text-gray-400">适用于教学、活动和游戏场景。</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">功能特点</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <!-- <li><i class="fa fa-check-circle text-green-400 mr-2"></i> 自定义概率设置</li> -->
+                        <li><i class="fa fa-check-circle text-green-400 mr-2"></i> 实时统计分析</li>
+                        <li><i class="fa fa-check-circle text-green-400 mr-2"></i> 结果可视化展示</li>
+                        <li><i class="fa fa-check-circle text-green-400 mr-2"></i> 历史记录保存</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">联系我们</h4>
+                    <p class="text-gray-400 mb-2">如有任何问题或建议，请联系我们</p>
+                    <a href="#" class="text-primary hover:text-primary/80 transition-colors duration-200">support@example.com</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500 text-sm">
+                <p>© 2023 概率工具 - 保留所有权利</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        // 初始化统计数据
+        let stats = {
+            totalA: 0,
+            totalB: 0,
+            history: []
+        };
+        
+        // 初始化图表
+        const chartA = new Chart(document.getElementById('chartA'), {
+            type: 'doughnut',
+            data: {
+                labels: ['A组', '其他'],
+                datasets: [{
+                    data: [0, 100],
+                    backgroundColor: ['#3B82F6', '#E5E7EB'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                cutout: '70%',
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: false
+                    }
+                }
+            }
+        });
+        
+        const chartB = new Chart(document.getElementById('chartB'), {
+            type: 'doughnut',
+            data: {
+                labels: ['B组', '其他'],
+                datasets: [{
+                    data: [0, 100],
+                    backgroundColor: ['#10B981', '#E5E7EB'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                cutout: '70%',
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: false
+                    }
+                }
+            }
+        });
+        
+        // 更新概率显示
+        function updateProbability() {
+            const probA = 100 ||document.getElementById('probabilityA').value;
+            const probB = 100 - probA;
+            
+            document.getElementById('probabilityAValue').textContent = probA;
+            document.getElementById('probabilityB').value = probB;
+            document.getElementById('probabilityBValue').textContent = probB;
+            
+            // 更新概率条
+            document.getElementById('probabilityBarA').style.width = `${probA}%`;
+            document.getElementById('probabilityBarA').textContent = `A组 (${probA}%)`;
+            document.getElementById('probabilityBarB').style.width = `${probB}%`;
+            document.getElementById('probabilityBarB').textContent = `B组 (${probB}%)`;
+        }
+        
+        // 抽奖函数概率
+        function drawGroup() {
+            const probA = 70;
+            // const probA = parseInt(document.getElementById('probabilityA').value);
+            const random = Math.floor(Math.random() * 100);
+            return random < probA ? 'A' : 'B';
+        }
+        
+        // 更新统计数据
+        function updateStats(result) {
+            if (result === 'A') {
+                stats.totalA++;
+            } else {
+                stats.totalB++;
+            }
+            
+            // 更新UI
+            document.getElementById('totalA').textContent = stats.totalA;
+            document.getElementById('totalB').textContent = stats.totalB;
+            
+            // 更新图表
+            chartA.data.datasets[0].data = [stats.totalA, stats.totalB];
+            chartA.update();
+            
+            chartB.data.datasets[0].data = [stats.totalB, stats.totalA];
+            chartB.update();
+            
+            // 添加到历史记录
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString();
+            stats.history.unshift({
+                result,
+                time: timeStr
+            });
+            
+            // 限制历史记录数量
+            if (stats.history.length > 10) {
+                stats.history.pop();
+            }
+            
+            updateHistoryUI();
+        }
+        
+        // 更新历史记录UI
+        function updateHistoryUI() {
+            const container = document.getElementById('historyContainer');
+            container.innerHTML = '';
+            
+            if (stats.history.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 italic text-center">暂无记录</p>';
+                return;
+            }
+            
+            stats.history.forEach(item => {
+                const resultClass = item.result === 'A' ? 'bg-blue-50 text-blue-800' : 'bg-green-50 text-green-800';
+                const icon = item.result === 'A' ? 'fa-circle text-blue-500' : 'fa-circle text-green-500';
+                
+                const entry = document.createElement('div');
+                entry.className = `flex items-center justify-between p-3 rounded-lg ${resultClass} animate-slide-up`;
+                entry.style.animationDelay = `${stats.history.indexOf(item) * 0.05}s`;
+                entry.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fa ${icon} mr-2"></i>
+                        <span>${item.result}组</span>
+                    </div>
+                    <span class="text-xs text-gray-500">${item.time}</span>
+                `;
+                
+                container.appendChild(entry);
+            });
+        }
+        
+        // 初始化按钮
+        document.getElementById('drawButton').addEventListener('click', function() {
+            const result = drawGroup();
+            updateStats(result);
+            
+            // 显示结果
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.classList.remove('hidden');
+            
+            const resultIcon = document.getElementById('resultIcon');
+            const resultText = document.getElementById('resultText');
+            const resultMessage = document.getElementById('resultMessage');
+            
+            if (result === 'A') {
+                resultIcon.className = 'fa fa-check-circle text-6xl text-primary';
+                resultText.className = 'text-3xl font-bold mb-2 text-primary';
+                resultText.textContent = 'A组';
+                resultMessage.textContent = '恭喜抽中A组！';
+                resultCard.className = 'bg-blue-50 rounded-lg p-6 text-center animate-slide-up';
+            } else {
+                resultIcon.className = 'fa fa-star text-6xl text-secondary';
+                resultText.className = 'text-3xl font-bold mb-2 text-secondary';
+                resultText.textContent = 'B组';
+                resultMessage.textContent = '恭喜抽中B组！';
+                resultCard.className = 'bg-green-50 rounded-lg p-6 text-center animate-slide-up';
+            }
+            
+            // 按钮动画
+            this.classList.add('animate-pulse');
+            setTimeout(() => {
+                this.classList.remove('animate-pulse');
+            }, 500);
+        });
+        
+        // 初始化
+        updateProbability();
+        updateHistoryUI();
+        
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 10) {
+                header.classList.add('py-2', 'shadow-md');
+                header.classList.remove('py-4');
+            } else {
+                header.classList.add('py-4');
+                header.classList.remove('py-2', 'shadow-md');
+            }
+        });
+    </script>
 </body>
-
-<script src="./people.min.js"></script>
-<script src="./index.js"></script>
-
 </html>
+    
