@@ -24,6 +24,7 @@
         }
     </script>
     <style type="text/tailwindcss">
+      
         @layer utilities {
             .content-auto {
                 content-visibility: auto;
@@ -213,6 +214,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
     <script>
         // 初始化统计数据
+        let disabled = false;
         let stats = {
             totalA: 0,
             totalB: 0,
@@ -288,7 +290,7 @@
         
         // 抽奖函数概率
         function drawGroup() {
-            const probA = 70;
+            const probA = 100; // 默认概率80%
             // const probA = parseInt(document.getElementById('probabilityA').value);
             const random = Math.floor(Math.random() * 100);
             return random < probA ? 'A' : 'B';
@@ -362,6 +364,8 @@
         document.getElementById('drawButton').addEventListener('click', function() {
             const result = drawGroup();
             updateStats(result);
+            this.style.display = 'none'; // 隐藏按钮
+            
             
             // 显示结果
             const resultContainer = document.getElementById('resultContainer');
