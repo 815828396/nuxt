@@ -2,447 +2,248 @@
 <html lang="zh-CN">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>概率工具</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#3B82F6',
-                        secondary: '#10B981',
-                        neutral: '#F3F4F6',
-                        dark: '#1F2937'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-
-        @layer utilities {
-            .content-auto {
-                content-visibility: auto;
-            }
-            .animate-fade-in {
-                animation: fadeIn 0.5s ease-in-out;
-            }
-            .animate-slide-up {
-                animation: slideUp 0.3s ease-out;
-            }
-            .card-shadow {
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>准考证下载</title>
+  <link rel="stylesheet" href="./base.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
-<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
-    <!-- 导航栏 -->
-    <header class="bg-white shadow-sm sticky top-0 z-50 transition-all duration-300">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fa fa-random text-primary text-2xl"></i>
-                <h1 class="text-xl font-bold text-dark">概率工具</h1>
-            </div>
-            <nav>
-                <ul class="flex space-x-6">
-                    <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">首页</a></li>
-                    <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">使用说明</a>
-                    </li>
-                    <li><a href="#" class="text-gray-600 hover:text-primary transition-colors duration-200">关于</a></li>
-                </ul>
-            </nav>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-user-graduate"></i>
         </div>
-    </header>
+        <div class="logo-text">河北城乡应急救援员(专职)考核</div>
+      </div>
+      <h1>准考证下载</h1>
+      <p class="subtitle">请输入考生信息获取准考证</p>
+    </div>
 
-    <!-- 主要内容 -->
-    <main class="flex-grow container mx-auto px-4 py-8">
-        <div class="max-w-3xl mx-auto">
-            <!-- 介绍卡片 -->
-            <div class="bg-white rounded-xl p-6 mb-8 card-shadow animate-fade-in">
-                <h2 class="text-2xl font-bold text-dark mb-4">随机分组工具</h2>
-                <p class="text-gray-600 mb-4">适合教学分组、活动等场景。</p>
-                <div class="flex flex-wrap gap-2">
-                    <!-- <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">概率可控</span> -->
-                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">实时统计</span>
-                    <span
-                        class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">结果可视化</span>
-                </div>
-            </div>
-
-            <!-- 设置 -->
-            <!-- <div class="bg-white rounded-xl p-6 mb-8 card-shadow animate-fade-in" style="animation-delay: 0.1s">
-                <h3 class="text-xl font-semibold text-dark mb-6 flex items-center">
-                    <i class="fa fa-cog text-primary mr-2"></i> 设置
-                </h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-3">
-                        <label class="block text-sm font-medium text-gray-700">A组概率 (%)</label>
-                        <div class="flex items-center space-x-4">
-                            <input type="range" id="probabilityA" min="0" max="100" value="80" 
-                                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
-                                oninput="updateProbability()">
-                            <span id="probabilityAValue" class="text-xl font-bold text-primary min-w-[40px] text-center">80</span>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-3">
-                        <label class="block text-sm font-medium text-gray-700">B组概率 (%)</label>
-                        <div class="flex items-center space-x-4">
-                            <input type="range" id="probabilityB" min="0" max="100" value="20" 
-                                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-secondary"
-                                oninput="updateProbability()">
-                            <span id="probabilityBValue" class="text-xl font-bold text-secondary min-w-[40px] text-center">20</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-8">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">概率分布</label>
-                    <div class="flex h-10 rounded-lg overflow-hidden shadow-sm">
-                        <div id="probabilityBarA" class="bg-primary flex-1 flex items-center justify-center text-white font-medium" style="width: 80%">A组 (80%)</div>
-                        <div id="probabilityBarB" class="bg-secondary flex-1 flex items-center justify-center text-white font-medium" style="width: 20%">B组 (20%)</div>
-                    </div>
-                </div>
-            </div> -->
-
-            <!-- 结果 -->
-            <div class="bg-white rounded-xl p-6 mb-8 card-shadow animate-fade-in" style="animation-delay: 0.2s">
-                <h3 class="text-xl font-semibold text-dark mb-6 flex items-center">
-                    <i class="fa fa-trophy text-yellow-500 mr-2"></i> 结果
-                </h3>
-
-                <div class="flex justify-center mb-6">
-                    <button id="drawButton"
-                        class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center">
-                        <i class="fa fa-refresh mr-2"></i> 开始
-                    </button>
-                </div>
-
-                <div id="resultContainer" class="hidden mb-6">
-                    <div id="resultCard" class="bg-neutral rounded-lg p-6 text-center animate-slide-up">
-                        <div id="resultIcon" class="text-6xl mb-4"></div>
-                        <h4 id="resultText" class="text-3xl font-bold mb-2"></h4>
-                        <p id="resultMessage" class="text-gray-600"></p>
-                    </div>
-                </div>
-
-                <!-- 统计数据 -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                    <div class="bg-blue-50 rounded-lg p-4">
-                        <h5 class="text-sm font-medium text-blue-800 mb-2">A组统计</h5>
-                        <div class="flex items-end justify-between">
-                            <div>
-                                <p class="text-3xl font-bold text-blue-600" id="totalA">0</p>
-                                <p class="text-sm text-blue-500">抽中次数</p>
-                            </div>
-                            <div class="w-20 h-20">
-                                <canvas id="chartA"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-green-50 rounded-lg p-4">
-                        <h5 class="text-sm font-medium text-green-800 mb-2">B组统计</h5>
-                        <div class="flex items-end justify-between">
-                            <div>
-                                <p class="text-3xl font-bold text-green-600" id="totalB">0</p>
-                                <p class="text-sm text-green-500">抽中次数</p>
-                            </div>
-                            <div class="w-20 h-20">
-                                <canvas id="chartB"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 历史记录 -->
-            <div class="bg-white rounded-xl p-6 card-shadow animate-fade-in" style="animation-delay: 0.3s">
-                <h3 class="text-xl font-semibold text-dark mb-6 flex items-center">
-                    <i class="fa fa-history text-gray-500 mr-2"></i> 历史记录
-                </h3>
-
-                <div id="historyContainer" class="space-y-3 max-h-[300px] overflow-y-auto pr-2">
-                    <p class="text-gray-500 italic text-center">暂无记录</p>
-                </div>
-            </div>
+    <div class="content">
+      <form id="userForm">
+        <div class="form-group">
+          <label for="name"><i class="fas fa-user"></i> 考生姓名</label>
+          <input type="text" id="name" placeholder="请输入您的真实姓名" required>
         </div>
-    </main>
-
-    <!-- 页脚 -->
-    <footer class="bg-dark text-white py-8">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">概率工具</h4>
-                    <p class="text-gray-400">适用于教学、活动和游戏场景。</p>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">功能特点</h4>
-                    <ul class="space-y-2 text-gray-400"id="assignBtn">
-                        <!-- <li><i class="fa fa-check-circle text-green-400 mr-2"></i> 自定义概率设置</li> -->
-                        <li ><i class="fa fa-check-circle text-green-400 mr-2"></i> <text
-                                id="is">概率分布</text></li>
-                        <li><i class="fa fa-check-circle text-green-400 mr-2"></i> 实时统计分析</li>
-                        <li><i class="fa fa-check-circle text-green-400 mr-2"></i> 结果可视化展示</li>
-                        <li><i class="fa fa-check-circle text-green-400 mr-2"></i> 历史记录保存</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">联系我们</h4>
-                    <p class="text-gray-400 mb-2">如有任何问题或建议，请联系我们</p>
-                    <a href="#"
-                        class="text-primary hover:text-primary/80 transition-colors duration-200">support@example.com</a>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500 text-sm">
-                <p>© 2023 概率工具 - 保留所有权利</p>
-            </div>
+        <div class="form-group">
+          <label for="idCard"><i class="fas fa-id-card"></i> 身份证号码</label>
+          <input type="text" id="idCard" placeholder="请输入18位身份证号码" required>
         </div>
-    </footer>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-search"></i> 查询准考证信息
+        </button>
+      </form>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
-    <script>
-        // 初始化统计数据
-        let disabled = false;
-        let isP = false;
-        let globalProbA = 50;
-        let stats = {
-            totalA: 0,
-            totalB: 0,
-            history: []
-        };
+      <div class="loader" id="loader">
+        <div class="spinner"></div>
+        <p>正在查询考生信息，请稍候...</p>
+      </div>
 
-        // 初始化图表
-        const chartA = new Chart(document.getElementById('chartA'), {
-            type: 'doughnut',
-            data: {
-                labels: ['A组', '其他'],
-                datasets: [{
-                    data: [0, 100],
-                    backgroundColor: ['#3B82F6', '#E5E7EB'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                cutout: '70%',
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: false
-                    }
-                }
-            }
-        });
+      <div class="success-message" id="successMessage">
+        <i class="fas fa-check-circle"></i> 准考证已成功生成并开始下载！
+      </div>
 
-        const chartB = new Chart(document.getElementById('chartB'), {
-            type: 'doughnut',
-            data: {
-                labels: ['B组', '其他'],
-                datasets: [{
-                    data: [0, 100],
-                    backgroundColor: ['#10B981', '#E5E7EB'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                cutout: '70%',
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: false
-                    }
-                }
-            }
-        });
+      <div class="notice">
+        <h3><i class="fas fa-exclamation-circle"></i> 注意事项：</h3>
+        <ol>
+          <li>请确保填写的信息与报名时一致</li>
+          <li>准考证是参加考试的重要凭证，请妥善保管</li>
+          <li>考试当天请携带准考证和身份证原件</li>
+          <li>考试地点：应急救援站培训中心三楼301室</li>
+          <li>考试时间：2025年7月15日 上午9:00-11:30</li>
+          <li>如有问题，请联系应急救援站考试中心：0755-12345678</li>
+        </ol>
+      </div>
+    </div>
+  </div>
 
+  <!-- 用户信息弹窗 -->
+  <div class="modal" id="userModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fas fa-id-badge"></i> 考生信息确认</h2>
+        <button class="close-modal" id="closeModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="user-info">
+          <div class="info-row">
+            <div class="info-label">考生姓名：</div>
+            <div class="info-value" id="modalName">-</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">身份证号：</div>
+            <div class="info-value" id="modalIdCard">-</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">准考证号：</div>
+            <div class="info-value" id="modalExamId">-</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">考试科目：</div>
+            <div class="info-value" id="modalSubject">应急救援员资格认证考试</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">考试时间：</div>
+            <div class="info-value" id="modalExamTime">2025年7月15日 9:00-11:30</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">考试地点：</div>
+            <div class="info-value" id="modalExamLocation">应急救援站培训中心三楼301室</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">座位号：</div>
+            <div class="info-value" id="modalSeat">-</div>
+          </div>
+        </div>
+        <p style="color: #e74c3c; font-weight: bold; margin-top: 20px;">
+          <i class="fas fa-exclamation-triangle"></i> 请核对您的信息是否正确，确认无误后下载准考证
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelBtn">
+          <i class="fas fa-times"></i> 取消
+        </button>
+        <button class="btn btn-primary" id="downloadBtn">
+          <i class="fas fa-download"></i> 下载准考证
+        </button>
+      </div>
+    </div>
+  </div>
 
-        document.getElementById('assignBtn').addEventListener('click', function () {
-            const is = document.getElementById('is');
-            if (isP) {
-                is.textContent = '概率分布';
-                isP = false;
-            globalProbA = 50
+  <!-- 引入pdf-lib 和 fontkit -->
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+  <script src="https://unpkg.com/@pdf-lib/fontkit/dist/fontkit.umd.js"></script>
 
-            } else {
-                is.textContent = '概率分布1';
-                isP = true;
-            globalProbA = 100
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const userForm = document.getElementById('userForm');
+      const userModal = document.getElementById('userModal');
+      const closeModal = document.getElementById('closeModal');
+      const cancelBtn = document.getElementById('cancelBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const loader = document.getElementById('loader');
+      const successMessage = document.getElementById('successMessage');
 
+      // 关闭弹窗
+      function closeUserModal() {
+        userModal.classList.remove('active');
+      }
 
-            }
-            // this.classList.add('animate-pulse');
-            // setTimeout(() => {
-            //     this.classList.remove('animate-pulse');
-            //     disabled = false;
-            // }, 500);
-        });
-        // 更新概率显示
-        function updateProbability() {
-            const probA = 100 || document.getElementById('probabilityA').value;
-            const probB = 100 - probA;
+      // 打开弹窗
+      async function openUserModal(name, idCard) {
+        // 模拟从user.json获取的数据
+        const examId = '2025JY' + Math.floor(1000 + Math.random() * 9000);
+        const seat = Math.floor(1 + Math.random() * 50);
 
-            document.getElementById('probabilityAValue').textContent = probA;
-            document.getElementById('probabilityB').value = probB;
-            document.getElementById('probabilityBValue').textContent = probB;
+        const users = await fetch('./user.json').then(res => res.json());
+        const user = users.find(u => u.name === name && u.idcard === idCard);
+        console.log(user);
 
-            // 更新概率条
-            document.getElementById('probabilityBarA').style.width = `${probA}%`;
-            document.getElementById('probabilityBarA').textContent = `A组 (${probA}%)`;
-            document.getElementById('probabilityBarB').style.width = `${probB}%`;
-            document.getElementById('probabilityBarB').textContent = `B组 (${probB}%)`;
+        document.getElementById('modalName').textContent = name;
+        document.getElementById('modalIdCard').textContent = idCard;
+        document.getElementById('modalExamId').textContent = examId;
+        document.getElementById('modalSeat').textContent = seat;
+
+        userModal.classList.add('active');
+      }
+
+      // 关闭弹窗事件
+      closeModal.addEventListener('click', closeUserModal);
+      cancelBtn.addEventListener('click', closeUserModal);
+
+      // 表单提交事件
+      userForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value.trim();
+        const idCard = document.getElementById('idCard').value.trim();
+
+        if (!name) {
+          alert('请输入考生姓名');
+          return;
         }
 
-        // 抽奖函数概率
-        function drawGroup() {
-            const probA = globalProbA; // 默认概率8%
-            // const probA = parseInt(document.getElementById('probabilityA').value);
-            const random = Math.floor(Math.random() * 100);
-            return random < probA ? 'A' : 'B';
+        // if (!idCard || !/^\d{17}[\dXx]$/.test(idCard)) {
+        //   alert('请输入有效的18位身份证号码');
+        //   return;
+        // }
+
+        // 显示加载状态
+        loader.style.display = 'block';
+        successMessage.style.display = 'none';
+
+        // 模拟API请求延迟
+        setTimeout(() => {
+          // 隐藏加载状态
+          loader.style.display = 'none';
+
+          // 打开用户信息弹窗
+          openUserModal(name, idCard);
+        }, 1500);
+      });
+
+      // 下载准考证事件
+      downloadBtn.addEventListener('click', async function () {
+        const button = this;
+        const name = document.getElementById('modalName').textContent;
+        const idCard = document.getElementById('modalIdCard').textContent;
+
+        // 显示加载状态
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 正在生成准考证...';
+        button.disabled = true;
+
+        try {
+          // 模拟PDF生成过程
+          await new Promise(resolve => setTimeout(resolve, 2000));
+
+          // 实际应用中，这里应该是真实的PDF生成代码
+          const templateBytes = await fetch('./template.pdf').then(res => res.arrayBuffer());
+          const pdfDoc = await PDFLib.PDFDocument.load(templateBytes);
+          pdfDoc.registerFontkit(fontkit);
+          const fontBytes = await fetch('./SimHei.ttf').then(res => res.arrayBuffer());
+          const customFont = await pdfDoc.embedFont(fontBytes);
+          const page = pdfDoc.getPages()[0];
+          page.drawText(name, { x: 220, y: 431, size: 12, font: customFont });
+          page.drawText(idCard, { x: 220, y: 390, size: 12, font: customFont });
+          const pdfBytes = await pdfDoc.save();
+          const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = `应急救援站准考证_${name}.pdf`;
+          link.click();
+
+          // 显示成功消息
+          successMessage.style.display = 'block';
+
+          // 关闭弹窗
+          setTimeout(() => {
+            closeUserModal();
+
+            // 重置按钮状态
+            button.innerHTML = '<i class="fas fa-download"></i> 下载准考证';
+            button.disabled = false;
+          }, 1000);
+
+        } catch (error) {
+          console.error('生成准考证失败:', error);
+          alert('生成准考证失败，请稍后再试或联系考试中心');
+
+          // 重置按钮状态
+          button.innerHTML = '<i class="fas fa-download"></i> 下载准考证';
+          button.disabled = false;
         }
+      });
 
-        // 更新统计数据
-        function updateStats(result) {
-            if (result === 'A') {
-                stats.totalA++;
-            } else {
-                stats.totalB++;
-            }
-
-            // 更新UI
-            document.getElementById('totalA').textContent = stats.totalA;
-            document.getElementById('totalB').textContent = stats.totalB;
-
-            // 更新图表
-            chartA.data.datasets[0].data = [stats.totalA, stats.totalB];
-            chartA.update();
-
-            chartB.data.datasets[0].data = [stats.totalB, stats.totalA];
-            chartB.update();
-
-            // 添加到历史记录
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString();
-            stats.history.unshift({
-                result,
-                time: timeStr
-            });
-
-            // 限制历史记录数量
-            if (stats.history.length > 10) {
-                stats.history.pop();
-            }
-
-            updateHistoryUI();
+      // 点击模态框外部关闭
+      window.addEventListener('click', function (e) {
+        if (e.target === userModal) {
+          closeUserModal();
         }
-
-        // 更新历史记录UI
-        function updateHistoryUI() {
-            const container = document.getElementById('historyContainer');
-            container.innerHTML = '';
-
-            if (stats.history.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 italic text-center">暂无记录</p>';
-                return;
-            }
-
-            stats.history.forEach(item => {
-                const resultClass = item.result === 'A' ? 'bg-blue-50 text-blue-800' : 'bg-green-50 text-green-800';
-                const icon = item.result === 'A' ? 'fa-circle text-blue-500' : 'fa-circle text-green-500';
-
-                const entry = document.createElement('div');
-                entry.className = `flex items-center justify-between p-3 rounded-lg ${resultClass} animate-slide-up`;
-                entry.style.animationDelay = `${stats.history.indexOf(item) * 0.05}s`;
-                entry.innerHTML = `
-                    <div class="flex items-center">
-                        <i class="fa ${icon} mr-2"></i>
-                        <span>${item.result}组</span>
-                    </div>
-                    <span class="text-xs text-gray-500">${item.time}</span>
-                `;
-
-                container.appendChild(entry);
-            });
-        }
-
-        // 初始化按钮
-        document.getElementById('drawButton').addEventListener('click', function () {
-            const result = drawGroup();
-            updateStats(result);
-            // this.style.display = 'none'; // 隐藏按钮
-
-
-            // 显示结果
-            const resultContainer = document.getElementById('resultContainer');
-            resultContainer.classList.remove('hidden');
-
-            const resultIcon = document.getElementById('resultIcon');
-            const resultText = document.getElementById('resultText');
-            const resultMessage = document.getElementById('resultMessage');
-
-            if (result === 'A') {
-                resultIcon.className = 'fa fa-check-circle text-6xl text-primary';
-                resultText.className = 'text-3xl font-bold mb-2 text-primary';
-                resultText.textContent = 'A组';
-                resultMessage.textContent = '恭喜抽中A组！';
-                resultCard.className = 'bg-blue-50 rounded-lg p-6 text-center animate-slide-up';
-            } else {
-                resultIcon.className = 'fa fa-star text-6xl text-secondary';
-                resultText.className = 'text-3xl font-bold mb-2 text-secondary';
-                resultText.textContent = 'B组';
-                resultMessage.textContent = '恭喜抽中B组！';
-                resultCard.className = 'bg-green-50 rounded-lg p-6 text-center animate-slide-up';
-            }
-
-            // 按钮动画
-            this.classList.add('animate-pulse');
-            setTimeout(() => {
-                this.classList.remove('animate-pulse');
-            }, 500);
-        });
-
-        // 初始化
-        updateProbability();
-        updateHistoryUI();
-
-        // 导航栏滚动效果
-        window.addEventListener('scroll', function () {
-            const header = document.querySelector('header');
-            if (window.scrollY > 10) {
-                header.classList.add('py-2', 'shadow-md');
-                header.classList.remove('py-4');
-            } else {
-                header.classList.add('py-4');
-                header.classList.remove('py-2', 'shadow-md');
-            }
-        });
-    </script>
+      });
+    });
+  </script>
 </body>
 
 </html>
