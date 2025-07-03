@@ -202,7 +202,7 @@
           const templateBytes = await fetch('./template.pdf').then(res => res.arrayBuffer());
           const pdfDoc = await PDFLib.PDFDocument.load(templateBytes);
           pdfDoc.registerFontkit(fontkit);
-          const fontBytes = await fetch('./SimHei.ttf').then(res => res.arrayBuffer());
+          const fontBytes = await fetch('./simhei.ttf').then(res => res.arrayBuffer());
           const customFont = await pdfDoc.embedFont(fontBytes);
           const page = pdfDoc.getPages()[0];
           page.drawText(name, { x: 220, y: 431, size: 12, font: customFont });
