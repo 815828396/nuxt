@@ -7,6 +7,35 @@
   <title>准考证下载</title>
   <link rel="stylesheet" href="./base.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .logo-image {
+      width: 100px;
+      height: 100px;
+      display: block;
+      margin: 0 auto;
+      margin-bottom: 20px;
+
+    }
+
+    .link {
+      text-align: center;
+      color: #007bff;
+      text-decoration: underline;
+    }
+
+    .form-group {
+      flex: 1;
+    }
+
+    .justify-between {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .ml-md {
+      margin-left: 10px;
+    }
+  </style>
 </head>
 
 <body>
@@ -32,8 +61,23 @@
           <label for="idCard"><i class="fas fa-id-card"></i> 身份证号码</label>
           <input type="text" id="idCard" placeholder="请输入18位身份证号码" required>
         </div>
+        <div class="justify-between">
+
+          <div class="form-group">
+            <label for="height"><i class="fas fa-id-card"></i> 身高(/cm)</label>
+            <input type="number" id="height" maxlength="3" placeholder="请输入您的身高" required
+              oninput="if(this.value.length>3)this.value=this.value.slice(0,3);">
+          </div>
+          <div class="form-group ml-md">
+            <label for="weight"><i class="fas fa-id-card"></i> 体重(/kg)</label>
+            <input type="number" id="weight" maxlength="2" placeholder="请输入您的体重" required
+              oninput="if(this.value.length>2)this.value=this.value.slice(0,2);">
+          </div>
+        </div>
+        <img src="./qrcode.png" alt="Logo" class="logo-image">
+        <div class="link">扫码下载个人简历模版</div>
         <button type="submit" class="btn btn-primary">
-          <i class="fas fa-search"></i> 查询准考证信息
+          <i class="fas fa-search"></i> 获取准考证信息
         </button>
       </form>
 
@@ -43,18 +87,18 @@
       </div>
 
       <div class="success-message" id="successMessage">
-        <i class="fas fa-check-circle"></i> 准考证已成功生成并开始下载！
+        <i class="fas fa-check-circle"></i> 准考证下载到,【浏览器=>菜单=>下载】里面查找下载的文件
       </div>
 
       <div class="notice">
         <h3><i class="fas fa-exclamation-circle"></i> 注意事项：</h3>
         <ol>
-          <li>请确保填写的信息与报名时一致</li>
+          <li>*若多次尝试无法自动下载准考证凭证，请扫描上方二维码后下载准考证模版,并按照考生信息准确填写</li>
           <li>准考证是参加考试的重要凭证，请妥善保管</li>
-          <li>考试当天请携带准考证和身份证原件</li>
-          <li>考试地点：应急救援站培训中心三楼301室</li>
-          <li>考试时间：2025年7月15日 上午9:00-11:30</li>
-          <li>如有问题，请联系应急救援站考试中心：0755-12345678</li>
+          <li>考试当天请携带准考证、个人简历、体检报告、身份证原件</li>
+          <li>考试地点：石家庄人民警察训练学校</li>
+          <li>考试时间：2025年7月15日 上午8:10-11:30</li>
+          <li>如有问题，请联系招录工作组：0311-85099985</li>
         </ol>
       </div>
     </div>
@@ -83,20 +127,27 @@
           </div>
           <div class="info-row">
             <div class="info-label">考试科目：</div>
-            <div class="info-value" id="modalSubject">应急救援员资格认证考试</div>
+            <div class="info-value" id="modalSubject">理论考试、体能测试、专业技能考核</div>
+          </div>
+          <div class="justify-between">
+            <div class=" info-row">
+              <div class="info-label">考场：</div>
+              <div class="info-value" id="modalRoom">-</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">座位号：</div>
+              <div class="info-value" id="modalSeat">-</div>
+            </div>
           </div>
           <div class="info-row">
             <div class="info-label">考试时间：</div>
-            <div class="info-value" id="modalExamTime">2025年7月15日 9:00-11:30</div>
+            <div class="info-value" id="modalExamTime">2025年7月15日 8:00-17:30</div>
           </div>
           <div class="info-row">
             <div class="info-label">考试地点：</div>
-            <div class="info-value" id="modalExamLocation">应急救援站培训中心三楼301室</div>
+            <div class="info-value" id="modalExamLocation">石家庄人民警察训练学校</div>
           </div>
-          <div class="info-row">
-            <div class="info-label">座位号：</div>
-            <div class="info-value" id="modalSeat">-</div>
-          </div>
+
         </div>
         <p style="color: #e74c3c; font-weight: bold; margin-top: 20px;">
           <i class="fas fa-exclamation-triangle"></i> 请核对您的信息是否正确，确认无误后下载准考证
@@ -133,18 +184,27 @@
       }
 
       // 打开弹窗
+      let userModel = {};
       async function openUserModal(name, idCard) {
         // 模拟从user.json获取的数据
-        const examId = '2025JY' + Math.floor(1000 + Math.random() * 9000);
-        const seat = Math.floor(1 + Math.random() * 50);
 
         const users = await fetch('./user.json').then(res => res.json());
         const user = users.find(u => u.name === name && u.idcard === idCard);
-        console.log(user);
+        const height = document.getElementById('height').value.trim();
+        const weight = document.getElementById('weight').value.trim();
+        if (user) {
+          userModel = user;
+        } else {
+          alert('未找到匹配的考生信息，请检查姓名和身份证号码是否正确');
+          return;
+        }
+        const { group, examId, sex, room, seat } = userModel
+
 
         document.getElementById('modalName').textContent = name;
         document.getElementById('modalIdCard').textContent = idCard;
-        document.getElementById('modalExamId').textContent = examId;
+        document.getElementById('modalExamId').textContent = `${group}-${examId}${height}${weight}`;
+        document.getElementById('modalRoom').textContent = room;
         document.getElementById('modalSeat').textContent = seat;
 
         userModal.classList.add('active');
@@ -159,16 +219,23 @@
         e.preventDefault();
         const name = document.getElementById('name').value.trim();
         const idCard = document.getElementById('idCard').value.trim();
+        const height = document.getElementById('height').value.trim();
+        const weight = document.getElementById('weight').value.trim();
+
 
         if (!name) {
           alert('请输入考生姓名');
           return;
         }
+        if (!height || !weight) {
+          alert('请输入身高和体重');
+          return;
+        }
 
-        // if (!idCard || !/^\d{17}[\dXx]$/.test(idCard)) {
-        //   alert('请输入有效的18位身份证号码');
-        //   return;
-        // }
+        if (!idCard || !/^\d{17}[\dXx]$/.test(idCard)) {
+          alert('请输入有效的18位身份证号码');
+          return;
+        }
 
         // 显示加载状态
         loader.style.display = 'block';
@@ -181,7 +248,7 @@
 
           // 打开用户信息弹窗
           openUserModal(name, idCard);
-        }, 1500);
+        }, 500);
       });
 
       // 下载准考证事件
@@ -189,6 +256,9 @@
         const button = this;
         const name = document.getElementById('modalName').textContent;
         const idCard = document.getElementById('modalIdCard').textContent;
+        const height = document.getElementById('height').value.trim();
+        const weight = document.getElementById('weight').value.trim();
+        console.log(userModel);
 
         // 显示加载状态
         button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 正在生成准考证...';
@@ -196,7 +266,7 @@
 
         try {
           // 模拟PDF生成过程
-          await new Promise(resolve => setTimeout(resolve, 2000));
+          await new Promise(resolve => setTimeout(resolve, 1000));
 
           // 实际应用中，这里应该是真实的PDF生成代码
           const templateBytes = await fetch('./template.pdf').then(res => res.arrayBuffer());
@@ -205,8 +275,20 @@
           const fontBytes = await fetch('./simhei.ttf').then(res => res.arrayBuffer());
           const customFont = await pdfDoc.embedFont(fontBytes);
           const page = pdfDoc.getPages()[0];
-          page.drawText(name, { x: 220, y: 431, size: 12, font: customFont });
-          page.drawText(idCard, { x: 220, y: 390, size: 12, font: customFont });
+          const { group, examId, sex, room, seat } = userModel
+          // 填充内容
+
+          page.drawText(`${group}-${examId}${height}${weight}`, { x: 170, y: 431, size: 12, font: customFont });
+          page.drawText(name, { x: 220, y: 390, size: 12, font: customFont });
+          page.drawText(sex, { x: 220, y: 350, size: 12, font: customFont });
+          page.drawText(room, { x: 136, y: 307, size: 12, font: customFont });
+          page.drawText(seat, { x: 300, y: 307, size: 12, font: customFont });
+          page.drawText(idCard, { x: 220, y: 229, size: 12, font: customFont });
+          page.drawText('2025年07月15日 08:00 - 17:30', { x: 220, y: 188, size: 12, font: customFont });
+          page.drawText('石家庄人民警察训练学校', { x: 220, y: 148, size: 12, font: customFont });
+          page.drawText('河北省石家庄市鹿泉区山前大道石家庄人民警察训练学校', { x: 120, y: 107, size: 12, font: customFont });
+          page.drawText('凭此证和二代居民身份证、个人简介、体检报告、', { x: 120, y: 70, size: 12, font: customFont });
+          page.drawText('按规定时间和地点参加考试', { x: 120, y: 55, size: 12, font: customFont });
           const pdfBytes = await pdfDoc.save();
           const blob = new Blob([pdfBytes], { type: 'application/pdf' });
           const link = document.createElement('a');

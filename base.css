@@ -119,6 +119,7 @@
 
     .form-group {
       margin-bottom: 25px;
+      flex: 1;
     }
 
     label {
